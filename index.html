@@ -2,276 +2,189 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#080b12">
-  <meta name="description" content="Anon Chat — converse anonimamente em tempo real.">
-  <title>Anon Chat PRO</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070a11">
+<meta name="description" content="Anon Chat Ultra — conversas anônimas online.">
+<title>ANON CHAT — ULTRA</title>
 
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg:#080b12;
-      --panel:#101722;
-      --panel2:#151f2d;
-      --border:#263447;
-      --text:#edf5ff;
-      --muted:#8b9bb2;
-      --cyan:#40f5df;
-      --green:#42e69a;
-      --red:#ff657b;
-    }
-
-    * { box-sizing:border-box; }
-
-    body {
-      margin:0;
-      min-height:100vh;
-      background:var(--bg);
-      color:var(--text);
-      font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
-    }
-
-    button,input { font:inherit; }
-    button { cursor:pointer; }
-    button:disabled { opacity:.45;cursor:not-allowed; }
-    button:focus-visible,input:focus-visible {
-      outline:2px solid var(--cyan);
-      outline-offset:3px;
-    }
-
-    .app {
-      max-width:1250px;
-      min-height:100vh;
-      padding:18px;
-      margin:auto;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-
-    header,.panel {
-      background:var(--panel);
-      border:1px solid var(--border);
-      border-radius:18px;
-    }
-
-    header {
-      padding:15px 19px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-
-    .brand { display:flex;align-items:center;gap:12px; }
-
-    .logo {
-      width:44px;height:44px;
-      display:grid;place-items:center;
-      color:var(--cyan);
-      background:#40f5df12;
-      border:1px solid #40f5df45;
-      border-radius:13px;
-      font-size:24px;font-weight:900;
-    }
-
-    h1 { margin:0;font-size:19px;letter-spacing:1px; }
-    h1 span { color:var(--cyan); }
-    .sub { color:var(--muted);font-size:12px;margin-top:3px; }
-
-    .status {
-      display:flex;align-items:center;gap:8px;
-      color:var(--muted);font-size:12px;
-    }
-
-    .dot {
-      width:8px;height:8px;border-radius:50%;
-      background:var(--red);
-    }
-
-    .dot.online { background:var(--green); }
-
-    .layout {
-      flex:1;min-height:620px;
-      display:grid;
-      grid-template-columns:280px minmax(0,1fr);
-      gap:16px;
-    }
-
-    .sidebar { padding:22px; }
-
-    .eyebrow {
-      color:var(--cyan);
-      text-transform:uppercase;
-      letter-spacing:1.8px;
-      font-size:11px;font-weight:800;
-    }
-
-    h2 { font-size:22px;line-height:1.3;margin:12px 0 8px; }
-
-    .muted { color:var(--muted); }
-
-    .field { margin-top:22px; }
-    label { display:block;margin-bottom:8px;font-size:12px; }
-
-    input {
-      width:100%;min-width:0;
-      color:var(--text);
-      background:#090e17;
-      border:1px solid var(--border);
-      border-radius:11px;
-      padding:13px;
-    }
-
-    input:focus { border-color:var(--cyan);outline:none; }
-
-    .btn {
-      width:100%;
-      margin-top:11px;
-      padding:13px;
-      border:1px solid var(--border);
-      border-radius:11px;
-      background:var(--panel2);
-      color:var(--text);
-      font-weight:700;
-    }
-
-    .btn-primary {
-      color:#071311;
-      background:var(--cyan);
-      border-color:var(--cyan);
-    }
-
-    .rules {
-      margin-top:23px;padding:14px;
-      background:#40f5df08;
-      border:1px solid #40f5df25;
-      border-radius:12px;
-    }
-
-    .rules strong { color:var(--cyan);font-size:12px; }
-    .rules p { font-size:12px;color:var(--muted);margin-bottom:0; }
-
-    .chat {
-      display:flex;flex-direction:column;
-      min-width:0;min-height:620px;
-      overflow:hidden;
-    }
-
-    .chat-head {
-      padding:16px 20px;
-      border-bottom:1px solid var(--border);
-      display:flex;justify-content:space-between;
-      align-items:center;gap:12px;
-    }
-
-    .chat-head h2 { font-size:15px;margin:0; }
-    .chat-head p { font-size:12px;margin:4px 0 0;color:var(--muted); }
-
-    .tag {
-      font-size:10px;letter-spacing:1px;
-      color:var(--cyan);
-      border:1px solid #40f5df40;
-      padding:6px 9px;border-radius:30px;
-      white-space:nowrap;
-    }
-
-    .messages {
-      flex:1;min-height:320px;
-      overflow-y:auto;overscroll-behavior:contain;
-      padding:18px;
-      display:flex;flex-direction:column;gap:13px;
-    }
-
-    .welcome {
-      margin:auto;max-width:330px;
-      text-align:center;padding:24px 8px;
-    }
-
-    .welcome .symbol { font-size:38px; }
-    .welcome h3 { margin:10px 0; }
-    .welcome p { color:var(--muted);font-size:13px; }
-
-    .message { max-width:82%;align-self:flex-start; }
-    .message.mine { align-self:flex-end; }
-
-    .meta {
-      display:flex;gap:8px;
-      margin:0 4px 5px;
-      font-size:11px;color:var(--muted);
-    }
-
-    .mine .meta { justify-content:flex-end; }
-
-    .bubble {
-      overflow-wrap:anywhere;white-space:pre-wrap;
-      padding:11px 14px;
-      border:1px solid #2a3a50;
-      background:#192333;
-      border-radius:5px 14px 14px;
-      line-height:1.6;
-    }
-
-    .mine .bubble {
-      background:#153b3a;
-      border-color:#28746c;
-      border-radius:14px 5px 14px 14px;
-    }
-
-    .system {
-      align-self:center;
-      max-width:95%;
-      text-align:center;
-      color:var(--muted);
-      font-size:11px;
-      background:#ffffff06;
-      padding:7px 12px;border-radius:20px;
-    }
-
-    .composer {
-      padding:14px;
-      border-top:1px solid var(--border);
-      background:#0c121c;
-    }
-
-    .composer form { display:flex;gap:9px; }
-    .composer input { flex:1; }
-
-    .send {
-      width:47px;flex-shrink:0;
-      border:0;border-radius:11px;
-      background:var(--cyan);color:#071311;
-      font-size:20px;font-weight:900;
-    }
-
-    .hint { font-size:10px;color:#718198;margin:9px 2px 0; }
-
-    footer {
-      display:flex;justify-content:space-between;
-      gap:12px;color:#68758b;font-size:11px;
-    }
-
-    @media(max-width:760px) {
-      .app { padding:10px;gap:10px; }
-      header { padding:12px; }
-      h1 { font-size:16px; }
-      .logo { width:39px;height:39px; }
-      .layout { grid-template-columns:1fr;min-height:0; }
-      .sidebar { padding:17px; }
-      .field { margin-top:14px; }
-      .rules { margin-top:15px; }
-      .chat { min-height:520px; }
-      .messages { min-height:300px;padding:13px; }
-      .chat-head { padding:14px; }
-      .composer { padding:11px; }
-      footer { flex-direction:column;text-align:center; }
-    }
-
-    @media(prefers-reduced-motion:reduce) {
-      *,*::before,*::after { animation:none!important;transition:none!important; }
-    }
-  </style>
+<style>
+:root {
+  color-scheme:dark;
+  --bg:#070a11;
+  --panel:#0e1420;
+  --panel2:#131d2c;
+  --border:#263348;
+  --text:#eef5ff;
+  --muted:#8999b1;
+  --cyan:#47f5df;
+  --purple:#9c7cff;
+  --green:#48e5a0;
+  --red:#ff657b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+  min-height:100vh
+}
+button,input{font:inherit}
+button{cursor:pointer}
+button:disabled{opacity:.4;cursor:not-allowed}
+button:focus-visible,input:focus-visible{
+  outline:2px solid var(--cyan);outline-offset:3px
+}
+.app{
+  width:min(1400px,100%);min-height:100vh;margin:auto;
+  padding:18px;display:flex;flex-direction:column;gap:16px
+}
+header,.panel{
+  background:var(--panel);
+  border:1px solid var(--border);border-radius:20px
+}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:16px 20px
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:48px;height:48px;display:grid;place-items:center;
+  color:var(--cyan);font-size:25px;font-weight:950;
+  border:1px solid #47f5df60;border-radius:15px;
+  background:#47f5df0d
+}
+h1{margin:0;font-size:20px;letter-spacing:1.3px}
+h1 span{color:var(--cyan)}
+.small{font-size:12px;color:var(--muted);margin-top:3px}
+.status{
+  display:flex;align-items:center;gap:8px;
+  color:var(--muted);font-size:12px
+}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.dot.online{background:var(--green)}
+.layout{
+  flex:1;min-height:650px;
+  display:grid;grid-template-columns:285px minmax(0,1fr);gap:16px
+}
+.sidebar{padding:22px}
+.eyebrow{
+  font-size:10px;font-weight:800;letter-spacing:2px;
+  color:var(--cyan);text-transform:uppercase
+}
+h2{font-size:23px;line-height:1.3;margin:12px 0 8px}
+.muted{color:var(--muted);line-height:1.7}
+.field{margin-top:20px}
+label{display:block;font-size:11px;margin-bottom:8px;color:#bdc9dc}
+input{
+  display:block;width:100%;min-width:0;padding:13px;
+  color:var(--text);background:#090e17;
+  border:1px solid var(--border);border-radius:12px
+}
+input:focus{outline:none;border-color:var(--cyan)}
+.btn{
+  width:100%;padding:13px;margin-top:10px;
+  border:1px solid var(--border);border-radius:12px;
+  color:var(--text);background:var(--panel2);font-weight:750
+}
+.btn-primary{
+  color:#071311;background:var(--cyan);border-color:var(--cyan)
+}
+.btn-purple{border-color:#9c7cff55;color:#c4b3ff}
+.rules{
+  margin-top:22px;padding:14px;border-radius:13px;
+  border:1px solid #47f5df24;background:#47f5df08
+}
+.rules strong{font-size:12px;color:var(--cyan)}
+.rules p{font-size:12px;color:var(--muted);margin-bottom:0}
+.chat{
+  min-width:0;min-height:650px;display:flex;flex-direction:column;
+  overflow:hidden
+}
+.chat-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:17px 20px;border-bottom:1px solid var(--border)
+}
+.chat-head h2{font-size:15px;margin:0}
+.chat-head p{font-size:12px;color:var(--muted);margin:4px 0 0}
+.tag{
+  white-space:nowrap;padding:6px 9px;border-radius:30px;
+  font-size:10px;letter-spacing:1px;color:var(--cyan);
+  border:1px solid #47f5df44;background:#47f5df0b
+}
+.messages{
+  flex:1;min-height:350px;max-height:calc(100vh - 280px);
+  overflow-y:auto;overscroll-behavior:contain;
+  padding:20px;display:flex;flex-direction:column;gap:13px
+}
+.welcome{
+  max-width:360px;margin:auto;padding:25px 10px;text-align:center
+}
+.welcome-icon{
+  width:72px;height:72px;margin:0 auto 16px;
+  display:grid;place-items:center;border-radius:23px;
+  border:1px solid #47f5df35;background:#47f5df0c;font-size:33px
+}
+.welcome h3{font-size:20px;margin:0 0 8px}
+.welcome p{color:var(--muted);font-size:13px;line-height:1.8}
+.message{align-self:flex-start;max-width:82%;min-width:0}
+.message.mine{align-self:flex-end}
+.meta{
+  display:flex;gap:8px;margin:0 4px 5px;
+  font-size:11px;color:var(--muted)
+}
+.mine .meta{justify-content:flex-end}
+.bubble{
+  overflow-wrap:anywhere;white-space:pre-wrap;
+  padding:11px 14px;border:1px solid #293a51;
+  background:#172232;border-radius:5px 15px 15px;
+  line-height:1.65
+}
+.mine .bubble{
+  background:#123a36;border-color:#26756b;
+  border-radius:15px 5px 15px 15px
+}
+.system{
+  align-self:center;max-width:95%;text-align:center;
+  color:var(--muted);font-size:11px;
+  background:#ffffff06;border:1px solid #ffffff0c;
+  border-radius:30px;padding:7px 12px
+}
+.composer{
+  padding:15px;border-top:1px solid var(--border);background:#0a1019
+}
+.composer form{display:flex;align-items:center;gap:9px}
+.composer input{flex:1}
+.send{
+  width:48px;height:47px;flex-shrink:0;
+  border:0;border-radius:12px;
+  color:#071311;background:var(--cyan);
+  font-size:21px;font-weight:900
+}
+.hint{font-size:10px;color:#738198;margin:9px 2px 0}
+footer{
+  display:flex;justify-content:space-between;gap:12px;
+  color:#68758b;font-size:11px
+}
+@media(max-width:760px){
+  .app{padding:10px;gap:10px}
+  header{padding:12px;border-radius:16px}
+  .logo{width:40px;height:40px}
+  h1{font-size:16px}
+  .small{font-size:10px}
+  .layout{grid-template-columns:1fr;min-height:0}
+  .sidebar{padding:17px}
+  .field{margin-top:14px}
+  .rules{margin-top:15px}
+  .chat{min-height:520px}
+  .messages{min-height:300px;max-height:60vh;padding:13px}
+  .chat-head{padding:14px}
+  .composer{padding:11px}
+  footer{flex-direction:column;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
 </head>
 
 <body>
@@ -281,7 +194,7 @@
       <div class="logo">A</div>
       <div>
         <h1>ANON<span>CHAT</span></h1>
-        <div class="sub">Conversas anônimas em tempo real</div>
+        <div class="small">ULTRA • CONVERSAS ANÔNIMAS</div>
       </div>
     </div>
     <div class="status" role="status" aria-live="polite">
@@ -292,123 +205,150 @@
 
   <div class="layout">
     <aside class="panel sidebar">
-      <div class="eyebrow">● Anon Chat PRO</div>
-      <h2>Conheça novas pessoas.</h2>
-      <p class="muted">Escolha um apelido e participe da conversa sem exibir seu nome real.</p>
+      <div class="eyebrow">● Seu espaço privado</div>
+      <h2>Fale sem revelar seu nome.</h2>
+      <p class="muted">
+        Entre diretamente como Anônimo ou escolha um apelido
+        para personalizar sua experiência.
+      </p>
 
       <div class="field">
-        <label for="nickname">SEU APELIDO</label>
-        <input id="nickname" maxlength="24" placeholder="Ex.: Anon_123" autocomplete="nickname">
+        <label for="nickname">APELIDO OPCIONAL</label>
+        <input id="nickname" maxlength="24"
+          placeholder="Deixe vazio para ser Anônimo"
+          autocomplete="nickname">
       </div>
 
-      <button class="btn btn-primary" id="connect">Conectar ↗</button>
+      <button class="btn btn-primary" id="connect">Entrar no chat ↗</button>
+      <button class="btn btn-purple" id="anonymous">Entrar como Anônimo</button>
       <button class="btn" id="disconnect" disabled>Desconectar</button>
 
       <div class="rules">
-        <strong>🛡️ Privacidade</strong>
-        <p>Não compartilhe senhas, endereço ou dados pessoais. O apelido não garante anonimato total perante o servidor.</p>
+        <strong>🛡️ Proteja sua privacidade</strong>
+        <p>
+          Não envie senhas, endereço ou dados pessoais.
+          Usar um apelido não impede que o servidor registre
+          informações técnicas. Converse com respeito.
+        </p>
       </div>
     </aside>
 
     <section class="panel chat">
       <div class="chat-head">
         <div>
-          <h2>Conversa global</h2>
-          <p id="subtitle">Conecte-se para começar.</p>
+          <h2>Chat global</h2>
+          <p id="subtitle">Escolha como deseja entrar.</p>
         </div>
-        <span class="tag">LIVE CHAT</span>
+        <span class="tag">TEMPO REAL</span>
       </div>
 
       <div class="messages" id="messages" role="log" aria-live="polite">
         <div class="welcome" id="welcome">
-          <div class="symbol">👤</div>
-          <h3>Seu espaço começa aqui</h3>
-          <p>Conecte-se para participar das conversas.</p>
+          <div class="welcome-icon">◈</div>
+          <h3>Seu anonimato começa aqui</h3>
+          <p>
+            Sem cadastro nesta interface e sem nome obrigatório.
+            Conecte-se para começar a conversar.
+          </p>
         </div>
       </div>
 
       <div class="composer">
         <form id="form">
-          <input id="text" maxlength="2000" placeholder="Digite sua mensagem..." autocomplete="off" disabled aria-label="Mensagem">
-          <button class="send" id="send" type="submit" disabled aria-label="Enviar">➤</button>
+          <input id="text" maxlength="2000"
+            placeholder="Conecte-se para escrever..."
+            autocomplete="off" disabled aria-label="Sua mensagem">
+          <button class="send" id="send" type="submit"
+            disabled aria-label="Enviar mensagem">➤</button>
         </form>
-        <div class="hint">Seja respeitoso. Nunca envie informações privadas.</div>
+        <div class="hint">Suas mensagens devem respeitar as outras pessoas.</div>
       </div>
     </section>
   </div>
 
   <footer>
-    <span>ANON CHAT © <span id="year"></span></span>
-    <span>Leve, simples e responsivo.</span>
+    <span>ANON CHAT ULTRA © <span id="year"></span></span>
+    <span>Leve • Responsivo • Sem bibliotecas externas</span>
   </footer>
 </main>
 
 <script>
 "use strict";
 
-// Seu serviço Render. O servidor precisa suportar WebSocket.
+// Endpoint WebSocket do serviço Render.
 const WS_URL = "wss://anon-chat-n94y.onrender.com";
 
 const $ = id => document.getElementById(id);
-const ui = {
-  nickname:$("nickname"),
+const el = {
+  nick:$("nickname"),
   connect:$("connect"),
+  anonymous:$("anonymous"),
   disconnect:$("disconnect"),
   status:$("status"),
   dot:$("dot"),
   subtitle:$("subtitle"),
   messages:$("messages"),
-  welcome:$("welcome"),
-  form:$("form"),
   text:$("text"),
-  send:$("send")
+  send:$("send"),
+  form:$("form")
 };
 
 $("year").textContent = new Date().getFullYear();
 
 let ws = null;
-let nickname = "";
-let manuallyClosed = false;
-let connectionAttempt = 0;
+let nickname = "Anônimo";
+let attempt = 0;
+let closedByUser = false;
+let sentCount = 0;
 
-function status(label, online = false) {
-  ui.status.textContent = label;
-  ui.dot.classList.toggle("online", online);
+function setStatus(value, online = false) {
+  el.status.textContent = value;
+  el.dot.classList.toggle("online", online);
 }
 
-function controls(connected, connecting = false) {
-  ui.connect.disabled = connected || connecting;
-  ui.disconnect.disabled = !connected && !connecting;
-  ui.nickname.disabled = connected || connecting;
-  ui.text.disabled = !connected;
-  ui.send.disabled = !connected;
-  ui.subtitle.textContent = connected
-    ? "Conectado como " + nickname
-    : "Conecte-se para começar.";
+function setUI(connected, connecting = false) {
+  el.connect.disabled = connected || connecting;
+  el.anonymous.disabled = connected || connecting;
+  el.disconnect.disabled = !connected && !connecting;
+  el.nick.disabled = connected || connecting;
+  el.text.disabled = !connected;
+  el.send.disabled = !connected;
+
+  el.text.placeholder = connected
+    ? "Escreva sua mensagem..."
+    : "Conecte-se para escrever...";
+
+  el.subtitle.textContent = connected
+    ? "Você está conectado como " + nickname
+    : "Escolha como deseja entrar.";
 }
 
 function system(text) {
-  ui.welcome?.remove();
-
-  const el = document.createElement("div");
-  el.className = "system";
-  el.textContent = text;
-  ui.messages.appendChild(el);
-  ui.messages.scrollTop = ui.messages.scrollHeight;
+  const node = document.createElement("div");
+  node.className = "system";
+  node.textContent = text;
+  el.messages.appendChild(node);
+  trimMessages();
+  el.messages.scrollTop = el.messages.scrollHeight;
 }
 
-function renderMessage(data) {
+function trimMessages() {
+  // Mantém o navegador leve em conversas longas.
+  while (el.messages.children.length > 200) {
+    el.messages.firstElementChild.remove();
+  }
+}
+
+function showMessage(data) {
   if (!data || typeof data !== "object") return;
 
-  const rawText = data.text ?? data.message ?? data.content;
-  if (typeof rawText !== "string" || !rawText.trim()) return;
+  const raw = data.text ?? data.message ?? data.content;
+  if (typeof raw !== "string" || !raw.trim()) return;
 
-  const content = rawText.slice(0, 2000);
+  const text = raw.slice(0, 2000);
   const author = String(
     data.nickname ?? data.username ?? data.sender ?? "Anônimo"
   ).slice(0, 40);
-
-  ui.welcome?.remove();
 
   const mine = author === nickname;
   const article = document.createElement("article");
@@ -427,18 +367,14 @@ function renderMessage(data) {
 
   const bubble = document.createElement("div");
   bubble.className = "bubble";
-  bubble.textContent = content;
+  bubble.textContent = text;
 
   meta.append(name, time);
   article.append(meta, bubble);
-  ui.messages.appendChild(article);
+  el.messages.appendChild(article);
 
-  // Limita o DOM para evitar lentidão em conversas longas.
-  while (ui.messages.children.length > 250) {
-    ui.messages.firstElementChild.remove();
-  }
-
-  ui.messages.scrollTop = ui.messages.scrollHeight;
+  trimMessages();
+  el.messages.scrollTop = el.messages.scrollHeight;
 }
 
 function receive(event) {
@@ -448,13 +384,13 @@ function receive(event) {
     data = JSON.parse(event.data);
   } catch {
     if (typeof event.data === "string") {
-      renderMessage({ nickname:"Servidor", text:event.data });
+      showMessage({nickname:"Servidor", text:event.data});
     }
     return;
   }
 
   if (Array.isArray(data)) {
-    data.slice(-100).forEach(renderMessage);
+    data.slice(-100).forEach(showMessage);
     return;
   }
 
@@ -462,13 +398,13 @@ function receive(event) {
 
   const type = String(data.type ?? data.event ?? "").toLowerCase();
 
-  if (type === "error" || type === "erro") {
-    system("Servidor: " + String(data.message ?? "Erro na operação").slice(0, 180));
+  if (["error", "erro"].includes(type)) {
+    system("Servidor: " + String(data.message ?? "Ocorreu um erro.").slice(0,180));
     return;
   }
 
   if (["system", "status", "notice"].includes(type)) {
-    system(String(data.message ?? data.text ?? "Aviso do servidor").slice(0, 200));
+    system(String(data.message ?? data.text ?? "Aviso do servidor.").slice(0,200));
     return;
   }
 
@@ -478,117 +414,131 @@ function receive(event) {
     typeof data.message === "string" ||
     typeof data.content === "string"
   ) {
-    renderMessage(data);
+    showMessage(data);
   }
 }
 
-function connect() {
-  if (ws && [WebSocket.CONNECTING, WebSocket.OPEN].includes(ws.readyState)) return;
-
-  nickname = ui.nickname.value.trim().replace(/\s+/g, "_").slice(0, 24);
-
-  if (!nickname) {
-    nickname = "Anon_" + Math.random().toString(36).slice(2, 8);
-    ui.nickname.value = nickname;
-  }
-
-  if (!/^wss?:\/\//i.test(WS_URL)) {
-    system("Endereço WebSocket inválido.");
+function connect(useAnonymous = false) {
+  if (ws && [WebSocket.CONNECTING, WebSocket.OPEN].includes(ws.readyState)) {
     return;
   }
 
-  manuallyClosed = false;
-  const attempt = ++connectionAttempt;
+  nickname = useAnonymous
+    ? "Anônimo"
+    : (el.nick.value.trim().replace(/\s+/g, "_").slice(0,24) || "Anônimo");
 
-  controls(false, true);
-  status("Conectando...");
+  closedByUser = false;
+  sentCount = 0;
+  const id = ++attempt;
+
+  setUI(false, true);
+  setStatus("Conectando...");
 
   try {
     const current = new WebSocket(WS_URL);
     ws = current;
 
     current.addEventListener("open", () => {
-      if (attempt !== connectionAttempt || ws !== current) {
+      if (ws !== current || id !== attempt) {
         current.close();
         return;
       }
 
-      status("Conectado", true);
-      controls(true);
-      system("Conectado como " + nickname + ".");
+      setStatus("Conectado", true);
+      setUI(true);
+      system("Conectado ao chat como " + nickname + ".");
 
+      // O backend precisa reconhecer o evento "join".
       current.send(JSON.stringify({
         type:"join",
         nickname
       }));
+
+      el.text.focus();
     });
 
     current.addEventListener("message", event => {
-      if (ws === current && attempt === connectionAttempt) receive(event);
+      if (ws === current && id === attempt) receive(event);
     });
 
     current.addEventListener("error", () => {
-      if (ws === current) status("Falha na conexão");
+      if (ws === current && id === attempt) {
+        setStatus("Erro de conexão");
+      }
     });
 
     current.addEventListener("close", () => {
-      if (ws !== current || attempt !== connectionAttempt) return;
+      if (ws !== current || id !== attempt) return;
 
       ws = null;
-      controls(false);
-      status("Desconectado");
+      setUI(false);
+      setStatus("Desconectado");
 
-      if (!manuallyClosed) {
-        system("Conexão encerrada. Tente conectar novamente.");
+      if (!closedByUser) {
+        system("Conexão encerrada. Você pode tentar novamente.");
       }
     });
   } catch (error) {
     ws = null;
-    controls(false);
-    status("Falha na conexão");
-    system("Não foi possível abrir a conexão.");
+    setUI(false);
+    setStatus("Falha na conexão");
+    system("Não foi possível abrir a conexão WebSocket.");
     console.error(error);
   }
 }
 
 function disconnect() {
-  manuallyClosed = true;
-  connectionAttempt++;
+  closedByUser = true;
+  ++attempt;
 
-  const old = ws;
+  const current = ws;
   ws = null;
 
-  if (old) old.close(1000, "Desconectado pelo usuário");
+  if (current) current.close(1000, "Usuário desconectou");
 
-  controls(false);
-  status("Desconectado");
-  system("Você se desconectou.");
+  setUI(false);
+  setStatus("Desconectado");
+  system("Você saiu do chat.");
 }
 
-ui.connect.addEventListener("click", connect);
-ui.disconnect.addEventListener("click", disconnect);
+el.connect.addEventListener("click", () => connect(false));
+el.anonymous.addEventListener("click", () => connect(true));
+el.disconnect.addEventListener("click", disconnect);
 
-ui.nickname.addEventListener("keydown", event => {
-  if (event.key === "Enter" && !ui.connect.disabled) connect();
+el.nick.addEventListener("keydown", event => {
+  if (event.key === "Enter" && !el.connect.disabled) connect(false);
 });
 
-ui.form.addEventListener("submit", event => {
+el.form.addEventListener("submit", event => {
   event.preventDefault();
 
-  const text = ui.text.value.trim();
+  const text = el.text.value.trim();
+
   if (!text || !ws || ws.readyState !== WebSocket.OPEN) return;
+
+  // Limite simples para evitar envios excessivos pela interface.
+  if (sentCount >= 8) {
+    system("Aguarde alguns segundos antes de continuar enviando.");
+    return;
+  }
 
   try {
     ws.send(JSON.stringify({
       type:"message",
       nickname,
-      text:text.slice(0, 2000)
+      text:text.slice(0,2000)
     }));
 
-    ui.text.value = "";
-    ui.text.focus();
+    sentCount++;
+    el.text.value = "";
+    el.text.focus();
+
+    // Libera envios gradualmente sem bloquear o chat.
+    setTimeout(() => {
+      sentCount = Math.max(0, sentCount - 1);
+    }, 2000);
   } catch (error) {
-    system("Não foi possível enviar a mensagem.");
+    system("Não foi possível enviar sua mensagem.");
     console.error(error);
   }
 });
